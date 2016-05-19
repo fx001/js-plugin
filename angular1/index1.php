@@ -57,7 +57,7 @@ UserInfoModule.directive("loader",function(){
 scope绑定策略
 @ 仅字符串
 = 双向属性绑定
-& 
+& 将父作用域的属性包装成一个函数
 */
 UserInfoModule.directive("at",function(){
 	return {
