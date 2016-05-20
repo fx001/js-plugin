@@ -45,6 +45,7 @@ UserInfoModule.factory('Data',function(){
 });
 
 //使用指令可以使每个容器的 controller - $scope 独立
+
 UserInfoModule.directive('toggle',function(){
 	return {
 		restrct:'E',
