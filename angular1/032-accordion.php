@@ -21,6 +21,15 @@
 <script>
 var UserInfoModule = angular.module('UserInfoModule', []);
 
+//设置常量
+UserInfoModule.constant('KEY','key111');
+UserInfoModule.value('v','v1');
+
+// run 方法在 config 方法之后，在 controller 等服务之前执行
+UserInfoModule.run(function(){
+	console.log('run');
+});
+
 UserInfoModule.factory('Data',function(){
 	return [
 		{
@@ -65,8 +74,10 @@ UserInfoModule.directive('toggle',function(){
 	};
 });
 
-UserInfoModule.controller('List1',['$scope','Data',function($scope,Data){
+UserInfoModule.controller('List1',['$scope','Data','KEY',function($scope,Data,KEY){
 	$scope.Data = Data;
+
+	console.log('常量：'+KEY);
 }]);
 
 </script>
