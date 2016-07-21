@@ -8,10 +8,10 @@
 .block p{margin:2px;background:#eee;border-radius:100%}
 
 .blockClick p{background:#ddd;}
-.blockClear p{background:none;}
+.blockClear p{background:none!important;}
 
 /*元素样式集*/
-.b0 p{background:#aaa;}
-.b1 p{background:#999;}
+.b0 p{background:#222;}
+.b1 p{background:#666;}
 .b2 p{background:#888;}
-.b3 p{background:#777;}
+.b3 p{background:#444;}
