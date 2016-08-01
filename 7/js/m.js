@@ -16,7 +16,7 @@ var Miracle={
 		//====================事件====================
 		//单元格点击事件
 		o.bClick = function(){
-			var tp;
+			var preBlock,isClear;
 			var _t = $(this);
 			var index = _t.index();
 			var	arrIndex = [];	//相邻值
@@ -26,21 +26,43 @@ var Miracle={
 				(index+o.col),
 				(index-o.col),
 			];
-			_t.addClass(o.cssClick);
-			console.log(o.blockActive);
+			if(!_t.hasClass(o.cssClick)){
+				_t.attr('class',o.cssClick+' '+_t.attr('class'));
+			}
 			if(o.blockActive >= 0){
+				//判断是否为相邻值
 				if(arrIndex.indexOf(o.blockActive) >= 0){
-					tpl = _t.attr('class');
-					console.log(tpl);	//=======go on 交换元素
+					preBlock = o.mainB.eq(o.blockActive);
+					o.changeClass(_t,preBlock);
+					//判断是否有消除标记
+					isClear = o.series();
+					if(isClear > 0){
+						o.bListenClear(isClear);
+						o.cancle();
+					}else{
+						setTimeout(function(){
+							o.changeClass(_t,preBlock);
+							o.cancle();
+						},500);
+					}
+				}else{
+					o.cancle();
 				}
-				o.cancle();
 			}else{
 				o.blockActive = index;
 			}
 		};
 
+		//交换2个容器的class值
+		o.changeClass = function(t1,t2){
+			var tp;
+			tp = t1.attr('class');
+			t1.attr('class',t2.attr('class'));
+			t2.attr('class',tp);
+		};
+
 		//还原样式
-		o.cancle = function(index){
+		o.cancle = function(){
 			o.mainB.removeClass(o.cssClick);
 			o.blockActive = -1;
 		};
@@ -70,41 +92,70 @@ var Miracle={
 		//检测连续值并标记
 		//返回：lastIndex 最后一个标记索引值
 		o.series = function(){
-			var start;
+			var start,c,r,step;
 			var tClass = '';	//当前class值
 			var preClass = '';	//上一个class值
 			var tCount = 1;
 			var lastIndex = 0;	//最后一个标记索引值
-			for(var r = 0;r < o.row;r++){
+			//=============================================go to 特殊元素消除
+			//横向检索
+			for(r = 0;r < o.row;r++){
 				start = r * o.col;
-				for(var c = start;c < (start + o.col);c++){
+				for(c = start;c < (start + o.col);c++){
 					tClass = o.getLastClass(o.mainB.eq(c).attr('class'));
 					if(preClass == tClass){
 						tCount ++;
 					}else{
-						lastIndex = o.seriesIn((c-tCount),tCount,lastIndex);
+						lastIndex = o.seriesIn((c-1),tCount,lastIndex,1);
 						tCount = 1;
 						preClass = tClass;
 					}
 				}
-				lastIndex = o.seriesIn((c-tCount),tCount,lastIndex);
+				lastIndex = o.seriesIn((c-1),tCount,lastIndex,1);
+				tCount = 1;
+				preClass = '';
+			}
+			//纵向检索
+			step = o.col;
+			for(c = 0;c < o.col;c++){
+				for(r = c;r <= (c + o.count - o.col);(r += step)){
+					tClass = o.getLastClass(o.mainB.eq(r).attr('class'));
+					if(preClass == tClass){
+						tCount ++;
+					}else{
+						lastIndex = o.seriesIn((r-step),tCount,lastIndex,2);
+						tCount = 1;
+						preClass = tClass;
+					}
+				}
+				lastIndex = o.seriesIn((r-step),tCount,lastIndex,2);
 				tCount = 1;
 				preClass = '';
 			}
 			return lastIndex;
 		};
 		/*
-		说明：标记
-		参数：s - 起始索引值，count - 数量，last - 最后标记值
+		说明：写入标记
+		参数：s - 索引值(该值为最后一个元素)，count - 数量，last - 传递最后标记值，mode - 标记方式(1 横向，2 纵向)
 		返回：最后标记的索引值
 		*/
-		o.seriesIn = function(s,count,last){
+		o.seriesIn = function(s,count,last,mode){
 			if(count >= 3){
-				for(var j = s;j < (s+count);j++){
-					o.mainB.eq(j).addClass(o.cssClear);
-					o.mainB.eq(j).children('p').html(count);	//=======html x
+				var max,step;
+				if(mode == 1){
+					max = s-count;
+					step = -1;
+				}else if(mode == 2){
+					max = s-o.col*count;
+					step = -o.col;
+				}else{
+					return false;
 				}
-				last = --j;
+				for(var j = s;j > max;j += step){
+					o.mainB.eq(j).addClass(o.cssClear);
+					//o.mainB.eq(j).children('p').html(count);	//=======html x
+				}
+				last = s;
 			}
 			return last;
 		};
@@ -146,7 +197,7 @@ var Miracle={
 		//==================初始化==================
 		o.init = function(){
 			o.main = c.main ? $("#"+c.main) : $("#miracle");	//主容器
-			o.initBlock();
+			//o.initBlock();
 			o.mainB = o.main.children('.block');	//单元格
 			o.bListenClear(o.series());	//标记+清除
 
