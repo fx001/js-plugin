@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.cle{width:100%;height:0px;overflow:hidden;clear:both}
+
+.tab{min-width:320px;max-width:640px;margin:10px auto;}
+
+.block{width:12%;float:left;background:#ccc}
+.block p{margin:2px;background:#eee;border-radius:100%}
+
+.blockClick p{-webkit-animation:rotateX 1s infinite;animation:rotateX 1s infinite;}
+.blockClear p{-webkit-animation:bgcolorNone 1s forwards;animation:bgcolorNone 1s forwards;}
+
+/*元素样式集*/
+.b0 p{background:#222;}
+.b1 p{background:#666;}
+.b2 p{background:#888;}
+.b3 p{background:#444;}
+.b4 p{background:#e3cbcb;}
+/*特殊元素样式集*/
+.b10 p{background:#008}	/*整行消除*/
+.b11 p{background:#800}	/*整列消除*/
+
+
+/*动画样式*/
+@-webkit-keyframes bgcolorNone{
+    0% {}
+    100% {background:none;}
+}
+
+@-webkit-keyframes rotateX{
+    0% {-moz-transform:rotateY(0deg);-webkit-transform:rotateY(0deg);-o-transform:rotateY(0deg);-ms-transform:rotateY(0deg);transform:rotateY(0deg);}
+    100% {-moz-transform:rotateY(360deg);-webkit-transform:rotateY(360deg);-o-transform:rotateY(360deg);-ms-transform:rotateY(360deg);transform:rotateY(360deg);}
+}
