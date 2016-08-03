@@ -51,14 +51,6 @@ var Miracle={
 			}
 		};
 
-		//交换2个容器的class值
-		o.changeClass = function(t1,t2){
-			var tp;
-			tp = t1.attr('class');
-			t1.attr('class',t2.attr('class'));
-			t2.attr('class',tp);
-		};
-
 		//还原样式
 		o.cancle = function(){
 			o.mainB.removeClass(o.cssClick);
@@ -88,6 +80,7 @@ var Miracle={
 
 		//====================过程方法====================
 		//检测连续值并标记
+		//参数：t1,t2 - 当前2个活动元素
 		//返回：lastIndex 最后一个标记索引值
 		o.series = function(t1,t2){
 			var start,c,r,step;
@@ -134,17 +127,25 @@ var Miracle={
 		};
 
 		//检测特殊消除方式
-		//
+		//参数，返回：与series方法一致
 		o.seriesSpecial = function(t1,t2){
 			if(t1 == undefined){
 				return 0;
 			}else{
-				var cl;
+				var cl,lastIndex = 0;
 				var count = arguments.length;
 				for(var i = 0;i < count;i++){
 					cl = o.getFirstClass(arguments[i].attr('class'));
-					console.log(cl);	//========================go on
+					switch(cl){
+						//整行消除
+						case 'b10':
+							//计算所在行的结尾索引值
+							lastIndex = Math.floor(arguments[i].index()/o.col) * o.col + o.col - 1;
+							o.markIn(lastIndex,o.col,lastIndex,1);
+							break;
+					}
 				}
+				return lastIndex;
 			}
 		};
 
@@ -166,8 +167,13 @@ var Miracle={
 					return false;
 				}
 				for(var j = s;j > max;j += step){
-					o.mainB.eq(j).addClass(o.cssClear);
-					o.mainB.eq(j).children('p').html(count);	//=======html x
+					//标记特殊元素
+					if(count == 4 && j == (max - step)){
+						o.mainB.eq(j).attr('class',o.setNewClass(10));
+					}else{
+						o.mainB.eq(j).addClass(o.cssClear);
+						o.mainB.eq(j).children('p').html(count);	//=======html x
+					}
 				}
 				last = s;
 			}
@@ -189,7 +195,7 @@ var Miracle={
 			var className;
 			if(id < 0){
 				//顶部随机值
-				className = 'b'+o.rd(o.colorLen-1)+' block';
+				className = o.setNewClass();
 				t.attr('class',className);
 				return className;
 			}else{
@@ -221,10 +227,8 @@ var Miracle={
 		o.initBlock = function(){
 			//html
 			var html = '';
-			var cid;
 			for(var i = 0;i < o.count;i++){
-				cid = o.rd(o.colorLen-1);
-				html += '<div class="b'+cid+' block"><p></p></div>';
+				html += '<div class="'+o.setNewClass()+'"><p></p></div>';
 			}
 			o.main.html(html);
 			o.main.append(o.blockSuffix);
@@ -234,8 +238,28 @@ var Miracle={
 		};
 		//==================初始化 END==================
 
+		//====================辅助函数====================
+		//交换2个容器的class值
+		o.changeClass = function(t1,t2){
+			var tp;
+			tp = t1.attr('class');
+			t1.attr('class',t2.attr('class'));
+			t2.attr('class',tp);
+		};
 
-		//====================函数====================
+		//返回一个元素的初始class值
+		//参数：n - 数字:样式编号,null:随机值
+		o.setNewClass = function(n){
+			var className;
+			if(n >= 0){
+				className = 'b'+n+' block';
+			}else{
+				className = 'b'+o.rd(o.colorLen-1)+' block';
+			}
+			return className;
+		};
+
+		//====================系统函数====================
 		//生成随机数
 		//n 上限
 		o.rd = function(n){

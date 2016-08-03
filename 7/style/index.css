@@ -16,8 +16,9 @@
 .b2 p{background:#888;}
 .b3 p{background:#444;}
 .b4 p{background:#e3cbcb;}
-
-.b10 p{background:#008}
+/*特殊元素样式集*/
+.b10 p{background:#008}	/*整行消除*/
+.b11 p{background:#800}	/*整列消除*/
 
 
 /*动画样式*/
