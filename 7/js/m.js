@@ -6,10 +6,10 @@ var Miracle={
 		o.cssClear = 'blockClear';	//被清除时的样式
 		o.cssClick = 'blockClick';	//被点击时的样式
 		//类属性
-		o.row =	4;	//行数
+		o.row =	12;	//行数
 		o.col =	8;	//列数
 		o.count = o.row*o.col
-		o.colorLen = 4;	//元素样式数量
+		o.colorLen = 5;	//元素样式数量
 		o.blockActive = -1;	//当前活动元素索引值
 
 
@@ -172,7 +172,7 @@ var Miracle={
 						o.mainB.eq(j).attr('class',o.setNewClass(10));
 					}else{
 						o.mainB.eq(j).addClass(o.cssClear);
-						o.mainB.eq(j).children('p').html(count);	//=======html x
+						//o.mainB.eq(j).children('p').html(count);	//=======html x
 					}
 				}
 				last = s;
@@ -217,7 +217,7 @@ var Miracle={
 		//==================初始化==================
 		o.init = function(){
 			o.main = c.main ? $("#"+c.main) : $("#miracle");	//主容器
-			//o.initBlock();
+			o.initBlock();
 			o.mainB = o.main.children('.block');	//单元格
 			o.bListenClear(o.series());	//标记+清除
 
