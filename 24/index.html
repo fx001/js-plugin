@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>24</title>
+<link rel="stylesheet" href="style/base.css"/>
+<link rel="stylesheet" href="style/index.css"/>
+<script src="js/zepto/zepto.min.js"></script>
+<script src="js/zepto/zepto.fx.js"></script>
+<script src="js/zepto/zepto.touch.js"></script>
+<script src="js/r.js"></script>
+<script>
+Zepto(function($){
+	var oRoom = Room.creatNew({
+		'main':'room'
+	});
+})
+</script>
+</head>
+
+<body>
+
+<div class="room r1" id="room" data-w="325" data-h="382">
+	<div class="ruler_w"><p class="num"></p></div>
+	<div class="ruler_h ruler_h_l"><p class="num"></p></div>
+
+	<div class="room door" data-w="74" data-h="74">
+		<p class="a_text">m</p>
+		<div class="ruler_w"><p class="num"></p></div>
+		<div class="ruler_h"><p class="num"></p></div>
+	</div>
+
+	<div class="room r2" data-w="190" data-h="120">
+		<p class="a_text">4</p>
+		<div class="ruler_w"><p class="num"></p></div>
+		<div class="ruler_h"><p class="num"></p></div>
+	</div>
+
+	<div class="room shafa" data-w="85" data-h="200">
+		<p class="a_text">sf</p>
+		<div class="ruler_w"><p class="num"></p></div>
+		<div class="ruler_h"><p class="num"></p></div>
+	</div>
+
+	<div class="room tv" data-w="50" data-h="250">
+		<p class="a_text">tv</p>
+		<div class="ruler_w"><p class="num"></p></div>
+		<div class="ruler_h"><p class="num"></p></div>
+	</div>
+</div>
+
+</body>
+</html>
